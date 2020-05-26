@@ -1,0 +1,16 @@
+{
+  "name": "next24hr-components",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "start": "cgb-scripts start",
+    "build": "rm -rf node_modules && npm i && rm -rf dist && cgb-scripts build",
+    "eject": "cgb-scripts eject"
+  },
+  "dependencies": {
+    "@emotion/core": "^10.0.21",
+    "@emotion/styled": "^10.0.23",
+    "@wordpress/api-fetch": "3.11.0",
+    "cgb-scripts": "1.20.0"
+  }
+}
