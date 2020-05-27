@@ -56,8 +56,24 @@
         $parsed_block = new stdclass();
 
         $parsed_block->blocks = $format_blocks($block->innerBlocks);
-        $parsed_block->alignment = $block->attrs['alignment'];
-        $parsed_block->direction = $block->attrs['direction'];
+
+        $exclude_from_dynamic_list = array(
+            'blocks',
+            'tag',
+        );
+
+        // Autocopy all attributes
+        foreach ($block->attrs as $key => $value) {
+            if (!in_array($key, $exclude_from_dynamic_list)) {
+                if ($key === 'sectionWidth') {
+                    $parsed_block->width = $block->attrs[$key];
+                } else if ($key == 'heightSetting') {
+                    $parsed_block->minHeight = $block->attrs[$key];
+                } else {
+                    $parsed_block->{$key} = $block->attrs[$key];
+                }
+            }
+        }
 
         return $parsed_block;
     }, 10, 2);
