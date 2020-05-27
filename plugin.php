@@ -1,11 +1,11 @@
 <?php
 /**
  * Plugin Name: RAWB Page Builder Base
- * Plugin URI: https://github.com/ahmadawais/create-guten-block/
- * Description: Custom, stripped down editor blocks - created via create-guten-block.
- * Author: mrahmadawais, maedahbatool
- * Author URI: https://AhmadAwais.com/
- * Version: 0.5.0
+ * Plugin URI: https://github.com/24hr-malmo/rawb-page-builder-base
+ * Description: Page Builder blocks ffor section and column
+ * Author: camilo tapia
+ * Author URI: https://24hr.se/
+ * Version: 0.5.1
  * License: GPL2+
  * License URI: https://www.gnu.org/licenses/gpl-2.0.txt
  *
