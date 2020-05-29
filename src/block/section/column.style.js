@@ -1,4 +1,5 @@
 import styled from '@emotion/styled';
+import { css } from '@emotion/core';
 
 const StyledColumnLabel = styled.div`
     position: absolute;
@@ -33,7 +34,14 @@ const StyledBlockRoot = styled.div`
     flex: 1;
 `;
 
+
+const buttonCss = css`
+	display: inline-flex;
+	align-items: center;
+`;
+
 export {
     StyledColumnLabel,
     StyledBlockRoot,
+    buttonCss,
 };
