@@ -49,6 +49,8 @@ registerBlockType( 'next24hr/column', {
     ],
     edit: function( props ) {
 
+        const { setAttributes } = props;
+
         const {
             alignment,
             direction,
