@@ -114,7 +114,7 @@ registerBlockType( 'next24hr/column', {
                     renderAppender={ () => (
                         <InnerBlocks.ButtonBlockAppender />
                     ) }
-                    allowedBlocks={ NEXT24HR_ALLOWED_BLOCK_TYPES.filter(block => block !== 'next24hr/section') }
+                    allowedBlocks={ NEXT24HR_ALLOWED_BLOCK_TYPES.filter(block => block !== 'next24hr/column' && block !== 'next24hr/section') }
                     // if we don't disable template lock, it will be inherited from parent
                     templateLock={ false }
                 />
