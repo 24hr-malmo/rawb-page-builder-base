@@ -9,12 +9,12 @@
 /* global wp, NEXT24HR_ALLOWED_BLOCK_TYPES */
 
 import { jsx } from '@emotion/core';
-import { StyledColumnLabel, StyledBlockRoot } from './column.style';
+import { StyledColumnLabel, StyledBlockRoot, buttonCss } from './column.style';
 
 const { __ } = wp.i18n; // Import __() from wp.i18n
 const { registerBlockType } = wp.blocks; // Import registerBlockType() from wp.blocks
 const { InnerBlocks, InspectorControls } = wp.editor;
-const { PanelBody, PanelRow, RadioControl } = wp.components;
+const { Button, ButtonGroup, Dashicon, PanelBody, PanelRow, RadioControl } = wp.components;
 
 /**
  * Register: aa Gutenberg Block.
@@ -40,6 +40,7 @@ registerBlockType( 'next24hr/column', {
     attributes: {
         alignment: { type: 'string' },
         direction: { type: 'string' },
+        features: { type: 'array', default: ['direction', 'aligment'] },
     },
     keywords: [
         __( 'next24hr-column — CGB Block' ),
@@ -48,9 +49,12 @@ registerBlockType( 'next24hr/column', {
     ],
     edit: function( props ) {
 
+        const { setAttributes } = props;
+
         const {
             alignment,
             direction,
+            features,
         } = props.attributes;
 
         return (
@@ -58,31 +62,53 @@ registerBlockType( 'next24hr/column', {
                 <StyledColumnLabel />
                 <InspectorControls>
                     <PanelBody title={ __( 'Column Options', 'next24hr' ) } >
-                        <PanelRow>
-                            <RadioControl
-                                label={ __( 'Content alignment', 'next24hr' ) }
-                                selected={ alignment }
-                                options={ [
-                                    { label: __( 'Left', 'next24hr' ), value: 'left' },
-                                    { label: __( 'Center', 'next24hr' ), value: 'center' },
-                                    { label: __( 'Right', 'next24hr' ), value: 'right' },
-                                ] }
-                                onChange={ (value) => props.setAttributes ({alignment: value}) }
-                            />
-                        </PanelRow>
-                        <PanelRow>
-                            <RadioControl
-                                label={ __( 'Direction of elements', 'next24hr' ) }
-                                selected={ direction }
-                                options={ [
-                                    { label: __( 'Column', 'next24hr' ), value: 'column' },
-                                    { label: __( 'Row', 'next24hr' ), value: 'row' },
-                                ] }
-                                onChange={ (value) => props.setAttributes ({direction: value}) }
-                            />
-                        </PanelRow>
+                        { features.includes('aligment') &&
+                            <PanelRow>
+                                <ButtonGroup>
+                                    <Button
+                                        css={buttonCss}
+                                        isLarge
+                                        value={'left'}
+                                        isPrimary={alignment === 'left'}
+                                        onClick={() => setAttributes({alignment: 'left'})}
+                                    >
+                                        <Dashicon icon="editor-alignleft" />
+                                    </Button>
+                                    <Button
+                                        css={buttonCss}
+                                        isLarge
+                                        isPrimary={alignment === 'center'}
+                                        onClick={() => setAttributes({alignment: 'center'})}
+                                    >
+                                        <Dashicon icon="editor-aligncenter" />
+                                    </Button>
+                                    <Button
+                                        css={buttonCss}
+                                        isLarge
+                                        isPrimary={alignment === 'right'}
+                                        onClick={() => setAttributes({alignment: 'right'})}
+                                    >
+                                        <Dashicon icon="editor-alignright" />
+                                    </Button>
+                                </ButtonGroup>
+                            </PanelRow>
+                        }
+                        { features.includes('direction') &&
+                            <PanelRow>
+                                 <RadioControl
+                                     label={ __( 'Direction of elements', 'next24hr' ) }
+                                     selected={ direction }
+                                     options={ [
+                                         { label: __( 'Column', 'next24hr' ), value: 'column' },
+                                         { label: __( 'Row', 'next24hr' ), value: 'row' },
+                                     ] }
+                                     onChange={ (value) => props.setAttributes ({direction: value}) }
+                                 />
+                            </PanelRow>
+                        }
                     </PanelBody>
                 </InspectorControls>
+
                 <InnerBlocks
                     // use the pre-made button block appender (not the default paragraph one)
                     renderAppender={ () => (
