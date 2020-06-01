@@ -41,6 +41,7 @@ registerBlockType( 'next24hr/column', {
         alignment: { type: 'string' },
         direction: { type: 'string' },
         features: { type: 'array', default: ['direction', 'aligment'] },
+        blockedBlocks: { type: 'array', default: [] },
     },
     keywords: [
         __( 'next24hr-column — CGB Block' ),
@@ -55,7 +56,10 @@ registerBlockType( 'next24hr/column', {
             alignment,
             direction,
             features,
+            blockedBlocks
         } = props.attributes;
+
+        const allowedBlocks = NEXT24HR_ALLOWED_BLOCK_TYPES.filter(block => block !== 'next24hr/section' && block !== 'next24hr/column' && !blockedBlocks.includes(block));
 
         return (
             <StyledBlockRoot>
@@ -114,7 +118,7 @@ registerBlockType( 'next24hr/column', {
                     renderAppender={ () => (
                         <InnerBlocks.ButtonBlockAppender />
                     ) }
-                    allowedBlocks={ NEXT24HR_ALLOWED_BLOCK_TYPES.filter(block => block !== 'next24hr/column' && block !== 'next24hr/section') }
+                    allowedBlocks={ allowedBlocks }
                     // if we don't disable template lock, it will be inherited from parent
                     templateLock={ false }
                 />

@@ -15,5 +15,6 @@
                 </script>
             <?php }
         );
-    }, 10000, 1);
+        return $allowed_blocks;
+    }, 1000000, 1);
 
