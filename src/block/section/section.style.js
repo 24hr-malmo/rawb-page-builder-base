@@ -82,8 +82,17 @@ const StyledSectionLabel = styled.div`
     }
 `;
 
+const StyledInfoBox = styled.div`
+    position: absolute;
+    top: -15px;
+    right: 0px;
+    z-index: 10;
+    font-size: 12px;
+`;
+
 export {
     StyledContainer,
     StyledBlockRoot,
     StyledSectionLabel,
+    StyledInfoBox,
 };

@@ -9,7 +9,7 @@
 /** @jsx jsx */
 
 import { jsx, css } from '@emotion/core';
-import { useState, useEffect } from '@wordpress/element';
+import { useEffect } from '@wordpress/element';
 import TemplateSelectButton from './template-select-button.js';
 // import React from 'react';
 
@@ -17,7 +17,7 @@ import TemplateSelectButton from './template-select-button.js';
 import '../editor.scss';
 import '../style.scss';
 
-import { StyledBlockRoot, StyledContainer, StyledSectionLabel } from './section.style';
+import { StyledBlockRoot, StyledContainer, StyledSectionLabel, StyledInfoBox } from './section.style';
 import { TEMPLATE_OPTIONS, DEFAULT_TEMPLATE_INDEX } from './template-options';
 
 const { __ } = wp.i18n; // Import __() from wp.i18n
@@ -35,7 +35,6 @@ const {
     Button,
     ButtonGroup,
     RadioControl,
-    SelectControl,
     ColorPalette,
 } = wp.components;
 
@@ -133,6 +132,13 @@ registerBlockType( 'next24hr/section', {
             features,
 
         } = props.attributes;
+
+        const infoBoxList = props.infoBoxList || [];
+
+        if (!Array.isArray(infoBoxList)) {
+            throw new Error('Info box List has to be an array');
+        }
+
 
         let {
             backgroundTypesSelection,
@@ -264,8 +270,30 @@ registerBlockType( 'next24hr/section', {
 
         };
 
+
+        const getInfoBoxListHtml = () => {
+            const infoBoxListHtml = infoBoxList.map(item => {
+                return (
+                    <div style={item.style} onClick={(e) => item.callback(e)}>
+                        {item.content}
+                    </div>
+                );
+            });
+
+            if (infoBoxList.length > 0) {
+                return (
+                    <StyledInfoBox>
+                        {infoBoxListHtml}
+                    </StyledInfoBox>
+                );
+            }
+
+            return null;
+        }
+
         return (
             <StyledBlockRoot>
+                {getInfoBoxListHtml()}
                 <StyledSectionLabel/>
                 <InspectorControls>
                     <PanelBody title={ __( 'Section Layout Options', 'next24hr' ) } >
