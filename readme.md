@@ -69,6 +69,26 @@ addFilter( 'blocks.registerBlockType', 'next24hr/compontents', settings => {
 });
 ```
 
+# Blocking (disabling) blocks inside a column
+
+If you want certain blocks to be disabled in a column, you can change an attribute
+called `blockedBlocks` like this:
+
+```javascript
+// Register the new settings
+addFilter( 'blocks.registerBlockType', 'next24hr/compontents', settings => {
+	if (settings.name !== 'next24hr/column') {
+		return settings;
+    }
+	if( typeof settings.attributes !== 'undefined' ){
+        settings.attributes = Object.assign( settings.attributes, {
+			blockedBlocks: { type: 'array', default: ['mysupercoolblock'] },
+		});
+	}
+	return settings;
+});
+```
+```
 
 ## How to develop
 
