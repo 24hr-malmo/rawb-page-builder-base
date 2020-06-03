@@ -59,7 +59,7 @@ registerBlockType( 'next24hr/column', {
             blockedBlocks
         } = props.attributes;
 
-        const allowedBlocks = NEXT24HR_ALLOWED_BLOCK_TYPES.filter(block => block !== 'next24hr/section' && block !== 'next24hr/column' && !blockedBlocks.includes(block));
+        const allowedBlocks = !Array.isArray(NEXT24HR_ALLOWED_BLOCK_TYPES) ? NEXT24HR_ALLOWED_BLOCK_TYPES : NEXT24HR_ALLOWED_BLOCK_TYPES.filter(block => block !== 'next24hr/section' && block !== 'next24hr/column' && !blockedBlocks.includes(block));
 
         return (
             <StyledBlockRoot>
