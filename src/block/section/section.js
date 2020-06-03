@@ -233,8 +233,9 @@ registerBlockType( 'next24hr/section', {
                     colors={ colorSelection }
                     value={ backgroundValue }
                     onChange={ color => {
-                        setAttributes({ backgroundValue: color });
-                        // setSelectedColor(color);
+                        const item = colorSelection.find(colorItem => color === colorItem.color);
+                        const value = item ? item.name : null;
+                        setAttributes({ backgroundValue: value });
                     }}
                     disableCustomColors
                 />
