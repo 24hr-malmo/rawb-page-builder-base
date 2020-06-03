@@ -169,12 +169,6 @@ registerBlockType( 'next24hr/section', {
             } );
         };
 
-        const updateVerticalPaddingSetting = ( verticalPadding ) => {
-            setAttributes({
-                verticalPadding,
-            });
-        };
-
         const updateVerticalAlignmentSetting = ( verticalAlignment ) => {
             setAttributes({
                 verticalAlignment,
@@ -232,12 +226,15 @@ registerBlockType( 'next24hr/section', {
             </div>
         );
 
+        const currentColorSelection = colorSelection.find(colorItem => backgroundValue === colorItem.name);
+        const currentColor = currentColorSelection ? currentColorSelection.color : null;
+
         const colorOptions = (
             <PanelRow>
                 <ColorPalette
                     label={ __( 'Background color', 'next24hr' ) }
                     colors={ colorSelection }
-                    value={ backgroundValue }
+                    value={ currentColor }
                     onChange={ color => {
                         const item = colorSelection.find(colorItem => color === colorItem.color);
                         const value = item ? item.name : null;
@@ -319,7 +316,7 @@ registerBlockType( 'next24hr/section', {
                                         { label: __( 'Medium', 'next24hr' ), value: 'medium' },
                                         { label: __( 'Big', 'next24hr' ), value: 'big' },
                                     ] }
-                                    onChange={ ( verticalPadding ) => updateVerticalPaddingSetting( verticalPadding, null ) }
+                                    onChange={ ( value ) => setAttributes({ verticalPadding: value }) }
                                 />
                             </PanelRow>
                         }
