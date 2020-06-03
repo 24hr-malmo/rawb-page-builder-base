@@ -13,7 +13,7 @@ import { StyledColumnLabel, StyledBlockRoot, buttonCss } from './column.style';
 
 const { __ } = wp.i18n; // Import __() from wp.i18n
 const { registerBlockType } = wp.blocks; // Import registerBlockType() from wp.blocks
-const { InnerBlocks, InspectorControls } = wp.editor;
+const { InnerBlocks, InspectorControls } = wp.blockEditor;
 const { Button, ButtonGroup, Dashicon, PanelBody, PanelRow, RadioControl } = wp.components;
 
 /**
@@ -41,7 +41,6 @@ registerBlockType( 'next24hr/column', {
         alignment: { type: 'string' },
         direction: { type: 'string' },
         features: { type: 'array', default: ['direction', 'aligment'] },
-        blockedBlocks: { type: 'array', default: [] },
     },
     keywords: [
         __( 'next24hr-column — CGB Block' ),
@@ -56,10 +55,11 @@ registerBlockType( 'next24hr/column', {
             alignment,
             direction,
             features,
-            blockedBlocks
         } = props.attributes;
 
-        const allowedBlocks = !Array.isArray(NEXT24HR_ALLOWED_BLOCK_TYPES) ? NEXT24HR_ALLOWED_BLOCK_TYPES : NEXT24HR_ALLOWED_BLOCK_TYPES.filter(block => block !== 'next24hr/section' && block !== 'next24hr/column' && !blockedBlocks.includes(block));
+        const blockedBlocks = props.blockedBlocks || [];
+
+        const allowedBlocks = !Array.isArray(NEXT24HR_ALLOWED_BLOCK_TYPES) ? true : NEXT24HR_ALLOWED_BLOCK_TYPES.filter(block => block !== 'next24hr/section' && block !== 'next24hr/column' && !blockedBlocks.includes(block));
 
         return (
             <StyledBlockRoot>
@@ -122,6 +122,7 @@ registerBlockType( 'next24hr/column', {
                     // if we don't disable template lock, it will be inherited from parent
                     templateLock={ false }
                 />
+
             </StyledBlockRoot>
         );
     },

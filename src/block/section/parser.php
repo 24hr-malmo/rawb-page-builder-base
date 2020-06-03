@@ -22,7 +22,6 @@
 
         // Autocopy all attributes
         foreach ($block->attrs as $key => $value) {
-                    error_log('--------------- ' . $key);
             if (!in_array($key, $exclude_from_dynamic_list)) {
                 if ($key == 'sectionWidth') {
                     $parsed_block->width = $block->attrs[$key];
