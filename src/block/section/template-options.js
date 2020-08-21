@@ -61,6 +61,17 @@ const TEMPLATE_OPTIONS = [
             [ 'next24hr/column', { width: '1/4' } ],
         ],
     },
+    {
+        style: 'minmax(min-content, 1fr) minmax(min-content, 1fr) minmax(min-content, 1fr) minmax(min-content, 1fr)',
+        title: __( 'Three columns; wide center column' ),
+        icon: <SVG width="48" height="48" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg"><Path d="M 24 34.742 L 24 13.282" /><Path d="M 41 34 C 41 35.105 40.105 36 39 36 L 9 36 C 7.895 36 7 35.105 7 34 L 7 14 C 7 12.895 7.895 12 9 12 L 39 12 C 40.105 12 41 12.895 41 14 Z M 31 14 L 25 14 L 25 34 L 31 34 Z M 17 14 L 17 34 L 23 34 L 23 14 Z M 39 34 L 39 14 L 33 14 L 33 34 Z M 15 14 L 9 14 L 9 34 L 15 34 Z" /></SVG>,
+        template: [
+            [ 'next24hr/column', { width: '1/4' } ],
+            [ 'next24hr/column', { width: '1/4' } ],
+            [ 'next24hr/column', { width: '1/4' } ],
+            [ 'next24hr/column', { width: '1/4' } ],
+        ],
+    },
 ];
 
 const DEFAULT_TEMPLATE_INDEX = 0;

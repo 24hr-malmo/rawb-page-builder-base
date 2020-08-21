@@ -20,6 +20,8 @@ import '../style.scss';
 import { StyledBlockRoot, StyledContainer, StyledSectionLabel, StyledInfoBox } from './section.style';
 import { TEMPLATE_OPTIONS, DEFAULT_TEMPLATE_INDEX } from './template-options';
 
+const { useSelect, useDispatch } = wp.data;
+
 const { __ } = wp.i18n; // Import __() from wp.i18n
 const { registerBlockType } = wp.blocks; // Import registerBlockType() from wp.blocks
 const {
@@ -133,6 +135,13 @@ registerBlockType( 'next24hr/section', {
 
         } = props.attributes;
 
+        const { clientId } = props;
+        const { replaceInnerBlocks } = useDispatch("core/block-editor");
+        const { inner_blocks } = useSelect(select => ({
+            inner_blocks: select("core/block-editor").getBlocks(clientId)
+        }));
+
+
         const infoBoxList = props.infoBoxList || [];
 
         if (!Array.isArray(infoBoxList)) {
@@ -162,11 +171,17 @@ registerBlockType( 'next24hr/section', {
         const image = backgroundType === 'image' ? backgroundValue : null;
 
         const templateSelectHandler = ( templateIndex ) => {
+
             const newTemplate = TEMPLATE_OPTIONS[ templateIndex ].template;
+
             setAttributes( {
                 templateSelected: newTemplate,
                 templateID: templateIndex,
             } );
+
+            // Trigger replacement of blocks to update section with new columns layout
+			replaceInnerBlocks(clientId, inner_blocks, false);
+
         };
 
         const updateVerticalAlignmentSetting = ( verticalAlignment ) => {

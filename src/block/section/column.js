@@ -8,8 +8,8 @@
 /** @jsx jsx */
 /* global wp, NEXT24HR_ALLOWED_BLOCK_TYPES */
 
-import { jsx } from '@emotion/core';
-import { StyledColumnLabel, StyledBlockRoot, buttonCss } from './column.style';
+import { Global, jsx } from '@emotion/core';
+import { globalCss, StyledColumnLabel, StyledBlockRoot, buttonCss } from './column.style';
 
 const { __ } = wp.i18n; // Import __() from wp.i18n
 const { registerBlockType } = wp.blocks; // Import registerBlockType() from wp.blocks
@@ -64,6 +64,7 @@ registerBlockType( 'next24hr/column', {
         return (
             <StyledBlockRoot>
                 <StyledColumnLabel />
+                <Global styles={globalCss} />
                 <InspectorControls>
                     <PanelBody title={ __( 'Column Options', 'next24hr' ) } >
                         { features.includes('aligment') &&
