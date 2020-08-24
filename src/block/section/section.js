@@ -88,7 +88,7 @@ registerBlockType( 'next24hr/section', {
     icon: 'tagcloud', // Block icon from Dashicons → https://developer.wordpress.org/resource/dashicons/.
     category: 'common', // Block category — Group blocks together based on common traits E.g. common, formatting, layout widgets, embed.
     attributes: {
-        templateSelected: { type: 'array' },
+        templateSelected: { type: 'array', default: [...TEMPLATE_OPTIONS[0].template]}, 
         templateID: { type: 'number', default: DEFAULT_TEMPLATE_INDEX },
         verticalAlignment: { type: Boolean },
         sectionWidth: { type: 'string', default: 'normal' },
@@ -164,23 +164,43 @@ registerBlockType( 'next24hr/section', {
 
         useEffect(() => {
             if (!templateSelected) {
-                templateSelectHandler(DEFAULT_TEMPLATE_INDEX);
+                templateSelectHandler(DEFAULT_TEMPLATE_INDEX, false);
+                console.log('dddd');
             }
         }, []);
 
         const image = backgroundType === 'image' ? backgroundValue : null;
 
-        const templateSelectHandler = ( templateIndex ) => {
+        const templateSelectHandler = ( templateIndex, replace = true) => {
 
-            const newTemplate = TEMPLATE_OPTIONS[ templateIndex ].template;
+            const newTemplate = [...TEMPLATE_OPTIONS[ templateIndex ].template];
+
+            const all = wp.data.select('core/block-editor').getBlocksByClientId(clientId);
+            const section = all[0];
 
             setAttributes( {
                 templateSelected: newTemplate,
                 templateID: templateIndex,
             } );
 
+            console.log('do it', newTemplate);
+
+            if (replace) {
+
             // Trigger replacement of blocks to update section with new columns layout
-			replaceInnerBlocks(clientId, inner_blocks, false);
+            replaceInnerBlocks(clientId, inner_blocks, false);
+
+            // This parts checks if we are removing columns and makes sure the content is moved to the 
+            // columns on the left of the removed columns
+            if (section && section.innerBlocks && section.innerBlocks.length > newTemplate.length) {
+                section.innerBlocks.forEach((block, index) => {
+                    if (index > newTemplate.length - 1) {
+                        wp.data.dispatch('core/block-editor').insertBlocks(block.innerBlocks, section.innerBlocks.length - 1, all[0].innerBlocks[newTemplate.length - 1].clientId, false);
+                    }
+                });
+            }
+
+            }
 
         };
 
@@ -304,6 +324,8 @@ registerBlockType( 'next24hr/section', {
             return null;
         }
 
+        console.log('ttt', templateSelected);
+
         return (
             <StyledBlockRoot>
                 {getInfoBoxListHtml()}
@@ -378,7 +400,7 @@ registerBlockType( 'next24hr/section', {
                         // the template from local state
                         template={ templateSelected }
                         // function to render the block appender -  we don't want the user to add blocks, so we don't render one
-                        renderAppender={ () => null }
+                        // renderAppender={ () => null }
                         // lock this template down - the user cannot add or remove columns
                         // templateLock={false}
                         templateLock="all"
