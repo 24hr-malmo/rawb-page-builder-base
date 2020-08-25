@@ -22,7 +22,6 @@ const StyledColumnLabel = styled.div`
 `;
 
 const StyledBlockRoot = styled.div`
-    background-color: white; 
     color: #000;
     display: block;
     width: 100%;
@@ -44,6 +43,10 @@ const globalCss = css`
         width: 100%;
         margin-top: 0px;
         margin-bottom: 0px;
+        box-shadow: 8px 0px 0px #e6eae7;
+        &:last-child {
+            box-shadow: none;
+        }
     }
 `;
 

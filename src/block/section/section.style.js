@@ -8,7 +8,7 @@ const StyledContainer = styled.div`
     & > div > .block-editor-block-list__layout {
         display: grid;
         grid-template-columns: ${ p => p.templateID ? TEMPLATE_OPTIONS[ p.templateID ].style : TEMPLATE_OPTIONS[ DEFAULT_TEMPLATE_INDEX ].style };
-        grid-column-gap: 10px;
+        grid-column-gap: 8px;
     }
 `;
 
@@ -17,7 +17,8 @@ const StyledBlockRoot = styled.div`
     margin-bottom: 2rem;
     margin-top: 2rem;
     padding: 2px 8px 8px;
-    background-color: #e6eae7;
+    background-color: #ffffff;
+    box-shadow: inset 8px 18px 0px #e6eae7, inset -8px -8px 0px #e6eae7;
 `;
 
 const StyledSectionLabel = styled.div`

@@ -183,8 +183,6 @@ registerBlockType( 'next24hr/section', {
                 templateID: templateIndex,
             } );
 
-            console.log('do it', newTemplate);
-
             if (replace) {
 
             // Trigger replacement of blocks to update section with new columns layout
@@ -324,7 +322,39 @@ registerBlockType( 'next24hr/section', {
             return null;
         }
 
-        console.log('ttt', templateSelected);
+        const currentSelectedColor = colorSelection.find(item => item.name === backgroundValue);
+        const currentDisplayColor = currentSelectedColor ? currentSelectedColor.color : null;
+
+        const sectionCss = css`
+            ${backgroundType === 'image' ? `
+                position: relative;
+                ::before {
+                    content: "";
+                    background: url(${backgroundValue.url}) no-repeat 50% 50%;
+                    opacity: 0.2;
+                    top: 0;
+                    left: 0;
+                    bottom: 0;
+                    right: 0;
+                    position: absolute;
+                    background-size: cover;
+                }` : null
+            }
+            ${backgroundType === 'color' ? `
+                position: relative;
+                ::before {
+                    content: "";
+                    background-color: ${currentDisplayColor};
+                    opacity: 0.3;
+                    top: 0;
+                    left: 0;
+                    bottom: 0;
+                    right: 0;
+                    position: absolute;
+                    background-size: cover;
+                }` : null
+            }
+         `;
 
         return (
             <StyledBlockRoot>
@@ -395,7 +425,7 @@ registerBlockType( 'next24hr/section', {
                         { backgroundType === 'image' ? mediaOptions : null }
                      </PanelBody>
                 </InspectorControls>
-                <StyledContainer templateID={templateID} >
+                <StyledContainer templateID={templateID} css={sectionCss}>
                     <InnerBlocks
                         // the template from local state
                         template={ templateSelected }
