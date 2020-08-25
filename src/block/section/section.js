@@ -326,7 +326,7 @@ registerBlockType( 'next24hr/section', {
         const currentDisplayColor = currentSelectedColor ? currentSelectedColor.color : null;
 
         const sectionCss = css`
-            ${backgroundType === 'image' ? `
+            ${backgroundType === 'image' && backgroundValue ? `
                 position: relative;
                 ::before {
                     content: "";
