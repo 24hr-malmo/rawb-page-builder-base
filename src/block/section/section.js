@@ -90,7 +90,7 @@ registerBlockType( 'next24hr/section', {
     attributes: {
         templateSelected: { type: 'array', default: [...TEMPLATE_OPTIONS[0].template]}, 
         templateID: { type: 'number', default: DEFAULT_TEMPLATE_INDEX },
-        verticalAlignment: { type: Boolean },
+        verticalAlignment: { type: 'string', default: 'top' },
         sectionWidth: { type: 'string', default: 'normal' },
         backgroundType: { type: 'string', default: 'transparent' },
         backgroundValue: {},
@@ -161,11 +161,16 @@ registerBlockType( 'next24hr/section', {
             backgroundTypesSelection = backgroundTypesSelection.filter(type => type.value !== 'color');
         }
 
-
         useEffect(() => {
             if (!templateSelected) {
                 templateSelectHandler(DEFAULT_TEMPLATE_INDEX, false);
-                console.log('dddd');
+            } else {
+                // Need to set it again, otherwise our json data wont have a template if a
+                // section is being added and templateSelectHandler() isnt triggered
+                setAttributes( {
+                    templateSelected: [...TEMPLATE_OPTIONS[templateID].template],
+                    templateID: templateID,
+                } );
             }
         }, []);
 
@@ -185,18 +190,18 @@ registerBlockType( 'next24hr/section', {
 
             if (replace) {
 
-            // Trigger replacement of blocks to update section with new columns layout
-            replaceInnerBlocks(clientId, inner_blocks, false);
+                // Trigger replacement of blocks to update section with new columns layout
+                replaceInnerBlocks(clientId, inner_blocks, false);
 
-            // This parts checks if we are removing columns and makes sure the content is moved to the 
-            // columns on the left of the removed columns
-            if (section && section.innerBlocks && section.innerBlocks.length > newTemplate.length) {
-                section.innerBlocks.forEach((block, index) => {
-                    if (index > newTemplate.length - 1) {
-                        wp.data.dispatch('core/block-editor').insertBlocks(block.innerBlocks, section.innerBlocks.length - 1, all[0].innerBlocks[newTemplate.length - 1].clientId, false);
-                    }
-                });
-            }
+                // This parts checks if we are removing columns and makes sure the content is moved to the 
+                // columns on the left of the removed columns
+                if (section && section.innerBlocks && section.innerBlocks.length > newTemplate.length) {
+                    section.innerBlocks.forEach((block, index) => {
+                        if (index > newTemplate.length - 1) {
+                            wp.data.dispatch('core/block-editor').insertBlocks(block.innerBlocks, section.innerBlocks.length - 1, all[0].innerBlocks[newTemplate.length - 1].clientId, false);
+                        }
+                    });
+                }
 
             }
 

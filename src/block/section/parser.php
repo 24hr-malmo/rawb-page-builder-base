@@ -35,7 +35,16 @@
 
         // If there's no backgroundValue no need to output that property
         if ( $block->attrs['backgroundValue'] !== null ) {
-            $parsed_block->backgroundValue = $block->attrs['backgroundValue'];
+            if ( $block->attrs['backgroundType'] === 'image' ) {
+                $parsed_block->backgroundValue = array(
+                    '__isimage' => true,
+                    'url' => $block->attrs['backgroundValue']['url'],
+                    'width' => $block->attrs['backgroundValue']['width'],
+                    'height' => $block->attrs['backgroundValue']['height'],
+                );
+            } else {
+                $parsed_block->backgroundValue = $block->attrs['backgroundValue'];
+            }
         }
 
         $template = [];
