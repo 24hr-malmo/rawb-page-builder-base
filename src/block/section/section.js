@@ -38,6 +38,8 @@ const {
     ButtonGroup,
     RadioControl,
     ColorPalette,
+    __experimentalRadio: Radio,
+    __experimentalRadioGroup: RadioGroup,
 } = wp.components;
 
 /**
@@ -105,7 +107,9 @@ registerBlockType( 'next24hr/section', {
         // This is the list of different background types selections. It can be overwritten
         backgroundTypesSelection: { type: 'array', default: defaultBackgroundTypes },
 
-        features: { type: 'array', default: ['background', 'verticalAlignment', 'width', 'verticalPadding', 'background.image', 'background.color'] },
+        mobileDesktopFilter: { type: 'string' },
+
+        features: { type: 'array', default: ['background', 'verticalAlignment', 'width', 'verticalPadding', 'background.image', 'background.color', 'mobileDesktopFilter'] },
     },
 
     keywords: [
@@ -130,9 +134,9 @@ registerBlockType( 'next24hr/section', {
 
             colorSelection,
             widthSelection,
+            mobileDesktopFilter,
 
             features,
-
         } = props.attributes;
 
         const { clientId } = props;
@@ -143,11 +147,21 @@ registerBlockType( 'next24hr/section', {
 
 
         const infoBoxList = props.infoBoxList || [];
-
         if (!Array.isArray(infoBoxList)) {
             throw new Error('Info box List has to be an array');
         }
 
+        const getVisibilityInfo = (mobileDesktopFilter = 'all') => {
+            if (mobileDesktopFilter !== 'all') {
+                return {
+                    content: `Visibility:  ${mobileDesktopFilter}`,
+                };
+            }
+        };
+        const visibilityInfo = getVisibilityInfo(mobileDesktopFilter);
+        if (visibilityInfo) {
+            infoBoxList.push(visibilityInfo);
+        }
 
         let {
             backgroundTypesSelection,
@@ -361,6 +375,24 @@ registerBlockType( 'next24hr/section', {
             }
          `;
 
+        const getVisibilityFilterPanel = () => {
+            if (features.includes('mobileDesktopFilter')) {
+                return (
+                    <PanelBody title="Visibility" initialOpen={false}>
+                        <RadioGroup
+                            accessibilityLabel="Visibility"
+                            onChange={value => setAttributes({ mobileDesktopFilter : value })}
+                            checked={mobileDesktopFilter}
+                        >
+                            <Radio value="all">All</Radio>
+                            <Radio value="mobile">Mobile</Radio>
+                            <Radio value="desktop">Desktop</Radio>
+                        </RadioGroup>
+                    </PanelBody>
+                );
+            }
+        };
+
         return (
             <StyledBlockRoot>
                 {getInfoBoxListHtml()}
@@ -377,7 +409,7 @@ registerBlockType( 'next24hr/section', {
                             </div>
                         </PanelRow>
                     </PanelBody>
-                    <PanelBody title={ __( 'Other options', 'next24hr' ) } >
+                    <PanelBody title={ __( 'Other options', 'next24hr' ) } initialOpen={false} >
                         { features.includes('verticalPadding') &&
                             <PanelRow>
                                 <RadioControl
@@ -429,6 +461,9 @@ registerBlockType( 'next24hr/section', {
                         { backgroundType === 'color' ? colorOptions : null }
                         { backgroundType === 'image' ? mediaOptions : null }
                      </PanelBody>
+
+                    { getVisibilityFilterPanel() }
+
                 </InspectorControls>
                 <StyledContainer templateID={templateID} css={sectionCss}>
                     <InnerBlocks
