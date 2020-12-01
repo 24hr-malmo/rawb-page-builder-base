@@ -17,7 +17,7 @@ import TemplateSelectButton from './template-select-button.js';
 import '../editor.scss';
 import '../style.scss';
 
-import { StyledBlockRoot, StyledContainer, StyledSectionLabel, StyledInfoBox } from './section.style';
+import { StyledBlockRoot, StyledContainer, StyledSectionLabel, StyledInfoBox, StyledInfoItem } from './section.style';
 import { TEMPLATE_OPTIONS, DEFAULT_TEMPLATE_INDEX } from './template-options';
 
 const { useSelect, useDispatch } = wp.data;
@@ -324,9 +324,9 @@ registerBlockType( 'next24hr/section', {
         const getInfoBoxListHtml = () => {
             const infoBoxListHtml = infoBoxList.map(item => {
                 return (
-                    <div style={item.style} onClick={(e) => item.callback(e)}>
+                    <StyledInfoItem style={item.style} onClick={(e) => item.callback(e)}>
                         {item.content}
-                    </div>
+                    </StyledInfoItem>
                 );
             });
 

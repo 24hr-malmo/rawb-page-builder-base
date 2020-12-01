@@ -36,10 +36,22 @@ const StyledSectionLabel = styled.div`
 
 const StyledInfoBox = styled.div`
     position: absolute;
-    top: -15px;
+    display: flex;
+    top: -16px;
     right: 0px;
+    color: rgba(0,0,0,0.4);
     z-index: 10;
-    font-size: 12px;
+    font-size: 9px;
+    font-weight: 600;
+    font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Oxygen-Sans,Ubuntu,Cantarell,"Helvetica Neue",sans-serif;
+    & div:last-child {
+        margin-right: 0rem;
+    }
+`;
+const StyledInfoItem = styled.div`
+    margin: 0rem 0.17rem;
+    background-color: #e6eae7;
+    padding: 0rem 8px;
 `;
 
 export {
@@ -47,4 +59,6 @@ export {
     StyledBlockRoot,
     StyledSectionLabel,
     StyledInfoBox,
+    StyledInfoItem,
 };
+
