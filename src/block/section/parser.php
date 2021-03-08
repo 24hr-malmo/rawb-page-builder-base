@@ -1,6 +1,8 @@
 <?php
+    // Get available templates from JSON
+    $templates = json_decode(file_get_contents(__DIR__ . '/templates.json'));
 
-    add_filter('headless_helper__next24hr/section', function($block, $format_blocks) {
+    add_filter('headless_helper__next24hr/section', function($block, $format_blocks) use ($templates) {
 
         $exclude_from_dynamic_list = array(
             'backgroundType',
@@ -48,7 +50,7 @@
         }
 
         $template = [];
-        $templateSelected = $block->attrs['templateSelected'];
+        $templateSelected = $block->attrs['templateSelected'] ?? $templates[0]; // Fallback to default
         foreach ($templateSelected as $templ) {
             $template[] = $templ[1];
         }

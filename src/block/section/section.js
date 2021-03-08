@@ -178,13 +178,6 @@ registerBlockType( 'next24hr/section', {
         useEffect(() => {
             if (!templateSelected) {
                 templateSelectHandler(DEFAULT_TEMPLATE_INDEX, false);
-            } else {
-                // Need to set it again, otherwise our json data wont have a template if a
-                // section is being added and templateSelectHandler() isnt triggered
-                setAttributes( {
-                    templateSelected: [...TEMPLATE_OPTIONS[templateID].template],
-                    templateID: templateID,
-                } );
             }
         }, []);
 
