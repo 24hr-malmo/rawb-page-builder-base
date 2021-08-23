@@ -51,7 +51,6 @@ const StyledInfoBox = styled.div`
 `;
 const StyledInfoItem = styled.div`
     margin: 0rem 0.17rem;
-    background-color: #e6eae7;
     padding: 0rem 8px;
 `;
 
