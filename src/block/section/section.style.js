@@ -23,10 +23,11 @@ const StyledBlockRoot = styled.div`
 
 const StyledSectionLabel = styled.div`
     position: relative;
-    height: 16px;
+    height: 15px;
     &:after {
         position: absolute;
         font-size: 9px;
+        top: 1px;
         opacity: .5;
         content: 'section';
         font-weight: bold;
@@ -37,7 +38,7 @@ const StyledSectionLabel = styled.div`
 const StyledInfoBox = styled.div`
     position: absolute;
     display: flex;
-    top: -16px;
+    top: 3px;
     right: 0px;
     color: rgba(0,0,0,0.4);
     z-index: 10;

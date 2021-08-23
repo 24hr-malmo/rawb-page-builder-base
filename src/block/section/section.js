@@ -21,6 +21,7 @@ import { StyledBlockRoot, StyledContainer, StyledSectionLabel, StyledInfoBox, St
 import { TEMPLATE_OPTIONS, DEFAULT_TEMPLATE_INDEX } from './template-options';
 
 const { useSelect, useDispatch } = wp.data;
+const { useRef } = wp.element;
 
 const { __ } = wp.i18n; // Import __() from wp.i18n
 const { registerBlockType } = wp.blocks; // Import registerBlockType() from wp.blocks
@@ -40,6 +41,7 @@ const {
     ColorPalette,
     __experimentalRadio: Radio,
     __experimentalRadioGroup: RadioGroup,
+	TextControl,
 } = wp.components;
 
 /**
@@ -95,6 +97,7 @@ registerBlockType( 'next24hr/section', {
         verticalAlignment: { type: 'string', default: 'top' },
         sectionWidth: { type: 'string', default: 'normal' },
         backgroundType: { type: 'string', default: 'transparent' },
+        anchorTarget: { type: 'string', default: '' },
         backgroundValue: {},
         verticalPadding: { type: 'string', default: 'medium' },
 
@@ -109,7 +112,18 @@ registerBlockType( 'next24hr/section', {
 
         mobileDesktopFilter: { type: 'string' },
 
-        features: { type: 'array', default: ['background', 'verticalAlignment', 'width', 'verticalPadding', 'background.image', 'background.color', 'mobileDesktopFilter'] },
+        anchorTarget: { type: 'string', default: '' },
+
+        features: { type: 'array', default: [
+            'background', 
+            'verticalAlignment', 
+            'width', 
+            'verticalPadding', 
+            'background.image', 
+            'background.color', 
+            'mobileDesktopFilter',
+            'anchorTarget',
+        ] },
     },
 
     keywords: [
@@ -135,6 +149,7 @@ registerBlockType( 'next24hr/section', {
             colorSelection,
             widthSelection,
             mobileDesktopFilter,
+            anchorTarget,
 
             features,
         } = props.attributes;
@@ -145,6 +160,7 @@ registerBlockType( 'next24hr/section', {
             inner_blocks: select("core/block-editor").getBlocks(clientId)
         }));
 
+        const anchorTargetRef = useRef(null);
 
         const infoBoxList = props.infoBoxList || [];
         if (!Array.isArray(infoBoxList)) {
@@ -158,9 +174,15 @@ registerBlockType( 'next24hr/section', {
                 };
             }
         };
+
         const visibilityInfo = getVisibilityInfo(mobileDesktopFilter);
         if (visibilityInfo) {
             infoBoxList.push(visibilityInfo);
+        }
+
+        const anchorTargetInfo = getAnchorTargetInfo(anchorTarget, anchorTargetRef);
+        if (anchorTargetInfo) {
+            infoBoxList.push(anchorTargetInfo);
         }
 
         let {
@@ -457,6 +479,19 @@ registerBlockType( 'next24hr/section', {
 
                     { getVisibilityFilterPanel() }
 
+                    { features.includes('anchorTarget') && (
+                        <PanelBody title="Anchor Target" initialOpen={false}>
+                            <PanelRow ref={anchorTargetRef}>
+                                <TextControl
+                                    label={__('Anchor Name')}
+                                    value={anchorTarget}
+                                    onChange={ (value) => setAttributes({ anchorTarget: value.replace(/^#/g, '') }) }
+                                />
+                            </PanelRow>
+                        </PanelBody>
+                    ) }
+
+
                 </InspectorControls>
                 <StyledContainer templateID={templateID} css={sectionCss}>
                     <InnerBlocks
@@ -482,3 +517,21 @@ registerBlockType( 'next24hr/section', {
     },
 
 } );
+
+const getAnchorTargetInfo = (values, ref) => {
+    if (values) {
+        return {
+            callback: () => {
+                if (ref && ref.current) {
+                    ref.current.scrollIntoView({
+                        behavior: 'smooth',
+                    });
+                }
+            },
+            content: `anchor: #${values}`,
+            style: { cursor: 'pointer' },
+        };
+    }
+};
+
+
