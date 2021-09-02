@@ -2,10 +2,10 @@
 /**
  * Plugin Name: RAWB Page Builder Base
  * Plugin URI: https://github.com/24hr-malmo/rawb-page-builder-base
- * Description: Page Builder blocks ffor section and column
+ * Description: Page Builder blocks for section and column
  * Author: camilo tapia
  * Author URI: https://24hr.se/
- * Version: 0.8.3
+ * Version: 0.9.3
  * License: GPL2+
  * License URI: https://www.gnu.org/licenses/gpl-2.0.txt
  *
