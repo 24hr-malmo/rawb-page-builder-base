@@ -135,7 +135,7 @@ registerBlockType( 'next24hr/section', {
 
     edit: function( props ) {
 
-        const { setAttributes } = props;
+        const { setAttributes, extraTemplates } = props;
 
         const {
 
@@ -207,9 +207,11 @@ registerBlockType( 'next24hr/section', {
 
         const image = backgroundType === 'image' ? backgroundValue : null;
 
+        const ALL_TEMPLATES = [ ...TEMPLATE_OPTIONS, ...(extraTemplates || []) ];
+
         const templateSelectHandler = ( templateIndex, replace = true) => {
 
-            const newTemplate = [...TEMPLATE_OPTIONS[ templateIndex ].template];
+            const newTemplate = [...ALL_TEMPLATES[ templateIndex ].template];
 
             const all = wp.data.select('core/block-editor').getBlocksByClientId(clientId);
             const section = all[0];
@@ -248,7 +250,7 @@ registerBlockType( 'next24hr/section', {
             setAttributes({ backgroundValue: null });
         };
 
-        const templateOptions = TEMPLATE_OPTIONS.map( ( templateOption, index ) => {
+        const templateOptions = ALL_TEMPLATES.map( ( templateOption, index ) => {
             return (
                 <TemplateSelectButton
                     icon={ templateOption.icon }

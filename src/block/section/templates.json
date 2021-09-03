@@ -25,11 +25,6 @@
         [ "next24hr/column", { "width": "1/4" } ]
     ],
     [
-        [ "next24hr/column", { "width": "1/6" } ],
-        [ "next24hr/column", { "width": "2/3" } ],
-        [ "next24hr/column", { "width": "1/6" } ]
-    ],
-    [
         [ "next24hr/column", { "width": "1/4" } ],
         [ "next24hr/column", { "width": "1/4" } ],
         [ "next24hr/column", { "width": "1/4" } ],
