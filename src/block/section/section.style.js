@@ -7,7 +7,7 @@ const StyledContainer = styled.div`
     position: relative;
     & > div > .block-editor-block-list__layout {
         display: grid;
-        grid-template-columns: ${ p => p.templateID ? TEMPLATE_OPTIONS[ p.templateID ].style : TEMPLATE_OPTIONS[ DEFAULT_TEMPLATE_INDEX ].style };
+        grid-template-columns: ${ p => (p.templateID && p.allTemplates) ? p.allTemplates[ p.templateID ].style : TEMPLATE_OPTIONS[ DEFAULT_TEMPLATE_INDEX ].style };
         grid-column-gap: 8px;
     }
 `;

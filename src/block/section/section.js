@@ -511,7 +511,7 @@ registerBlockType( 'next24hr/section', {
 
 
                 </InspectorControls>
-                <StyledContainer templateID={templateID} css={sectionCss}>
+                <StyledContainer templateID={templateID} css={sectionCss} allTemplates={ALL_TEMPLATES}>
                     <InnerBlocks
                         // the template from local state
                         template={ templateSelected }
