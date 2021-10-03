@@ -99,7 +99,8 @@ registerBlockType( 'next24hr/section', {
         backgroundType: { type: 'string', default: 'transparent' },
         anchorTarget: { type: 'string', default: '' },
         backgroundValue: {},
-        verticalPadding: { type: 'string', default: 'medium' },
+        paddingTop: { type: 'string', default: 'medium' },
+        paddingBottom: { type: 'string', default: 'medium' },
 
         // This is the list off colors we will render in the admin UI. It can be overwritten to show a custom color list.
         colorSelection: { type: 'array', default: defaultColors },
@@ -134,7 +135,7 @@ registerBlockType( 'next24hr/section', {
 
     edit: function( props ) {
 
-        const { setAttributes } = props;
+        const { setAttributes, extraTemplates } = props;
 
         const {
 
@@ -144,7 +145,8 @@ registerBlockType( 'next24hr/section', {
             sectionWidth,
             backgroundType,
             backgroundValue,
-            verticalPadding,
+            paddingTop,
+            paddingBottom,
 
             colorSelection,
             widthSelection,
@@ -205,9 +207,11 @@ registerBlockType( 'next24hr/section', {
 
         const image = backgroundType === 'image' ? backgroundValue : null;
 
+        const ALL_TEMPLATES = [ ...TEMPLATE_OPTIONS, ...(extraTemplates || []) ];
+
         const templateSelectHandler = ( templateIndex, replace = true) => {
 
-            const newTemplate = [...TEMPLATE_OPTIONS[ templateIndex ].template];
+            const newTemplate = [...ALL_TEMPLATES[ templateIndex ].template];
 
             const all = wp.data.select('core/block-editor').getBlocksByClientId(clientId);
             const section = all[0];
@@ -246,7 +250,7 @@ registerBlockType( 'next24hr/section', {
             setAttributes({ backgroundValue: null });
         };
 
-        const templateOptions = TEMPLATE_OPTIONS.map( ( templateOption, index ) => {
+        const templateOptions = ALL_TEMPLATES.map( ( templateOption, index ) => {
             return (
                 <TemplateSelectButton
                     icon={ templateOption.icon }
@@ -426,18 +430,32 @@ registerBlockType( 'next24hr/section', {
                     </PanelBody>
                     <PanelBody title={ __( 'Other options', 'next24hr' ) } initialOpen={false} >
                         { features.includes('verticalPadding') &&
-                            <PanelRow>
-                                <RadioControl
-                                    label={ __( 'Vertical Padding', 'next24hr' ) }
-                                    selected={ verticalPadding }
-                                    options={ [
-                                        { label: __( 'None', 'next24hr' ), value: 'none' },
-                                        { label: __( 'Medium', 'next24hr' ), value: 'medium' },
-                                        { label: __( 'Big', 'next24hr' ), value: 'big' },
-                                    ] }
-                                    onChange={ ( value ) => setAttributes({ verticalPadding: value }) }
-                                />
-                            </PanelRow>
+                            <div>
+                                <PanelRow>
+                                    <RadioControl
+                                        label={ __( 'Padding Top', 'next24hr' ) }
+                                        selected={ paddingTop }
+                                        options={ [
+                                            { label: __( 'None', 'next24hr' ), value: 'none' },
+                                            { label: __( 'Medium', 'next24hr' ), value: 'medium' },
+                                            { label: __( 'Big', 'next24hr' ), value: 'big' },
+                                        ] }
+                                        onChange={ ( value ) => setAttributes({ paddingTop: value }) }
+                                    />
+                                </PanelRow>
+                                <PanelRow>
+                                    <RadioControl
+                                        label={ __( 'Padding Bottom', 'next24hr' ) }
+                                        selected={ paddingBottom }
+                                        options={ [
+                                            { label: __( 'None', 'next24hr' ), value: 'none' },
+                                            { label: __( 'Medium', 'next24hr' ), value: 'medium' },
+                                            { label: __( 'Big', 'next24hr' ), value: 'big' },
+                                        ] }
+                                        onChange={ ( value ) => setAttributes({ paddingBottom: value }) }
+                                    />
+                                </PanelRow>
+                            </div>
                         }
                         { features.includes('verticalAlignment') &&
                             <PanelRow>
@@ -493,7 +511,7 @@ registerBlockType( 'next24hr/section', {
 
 
                 </InspectorControls>
-                <StyledContainer templateID={templateID} css={sectionCss}>
+                <StyledContainer templateID={templateID} css={sectionCss} allTemplates={ALL_TEMPLATES}>
                     <InnerBlocks
                         // the template from local state
                         template={ templateSelected }
