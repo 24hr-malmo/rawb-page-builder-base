@@ -1,0 +1,29 @@
+# This workflow will do a clean installation of node dependencies, cache/restore them, build the source code and deploy to packagist
+
+name: Node.js CI
+
+on:
+  push:
+    branches: [ "master" ]
+  pull_request:
+    branches: [ "master" ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+      with:
+        node-version: 16.x
+        cache: 'npm'
+
+    - run: npm ci
+    - run: npm run build
+
+    - uses: stefanzweifel/git-auto-commit-action@v4
+      with:
+        file_pattern: 'build/*'
+        commit_message: Add Built Files
+
+    - run: curl -XPOST -H'content-type:application/json' 'https://packagist.org/api/update-package?username=24hrservices&apiToken=${{ secrets.PACKAGIST_API_TOKEN }}' -d'{"repository":{"url":"https://packagist.org/packages/24hr/rawb-page-builder-base"}}'
