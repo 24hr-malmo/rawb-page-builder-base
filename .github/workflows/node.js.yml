@@ -19,7 +19,6 @@ jobs:
         node-version: 12.x
         cache: 'npm'
 
-    - run: rm -rf dist
-    - run: npm i
-    - run: cgb-scripts build
+    - run: npm ci
+    - run: npm run build
     - run: curl -XPOST -H'content-type:application/json' 'https://packagist.org/api/update-package?username=24hrservices&apiToken=${{ secrets.PACKAGIST_API_TOKEN }}' -d'{"repository":{"url":"https://packagist.org"}}'
