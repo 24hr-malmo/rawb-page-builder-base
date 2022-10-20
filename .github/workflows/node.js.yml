@@ -26,4 +26,4 @@ jobs:
         file_pattern: 'build/*'
         commit_message: Add Built Files
 
-    - run: curl -XPOST -H'content-type:application/json' 'https://packagist.org/api/update-package?username=24hrservices&apiToken=${{ secrets.PACKAGIST_API_TOKEN }}' -d'{"repository":{"url":"https://packagist.org/packages/richardsweeney/rawb-page-builder-base"}}'
+    - run: curl -XPOST -H'content-type:application/json' 'https://packagist.org/api/update-package?username=24hrservices&apiToken=${{ secrets.PACKAGIST_API_TOKEN }}' -d'{"repository":{"url":"https://packagist.org/packages/24hr/rawb-page-builder-base"}}'
