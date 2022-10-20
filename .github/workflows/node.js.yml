@@ -23,7 +23,7 @@ jobs:
 
     - uses: stefanzweifel/git-auto-commit-action@v4
       with:
-        file_pattern: 'build/*.js'
-        commit_message: Add Built JS
+        file_pattern: 'build/*'
+        commit_message: Add Built Files
 
     - run: curl -XPOST -H'content-type:application/json' 'https://packagist.org/api/update-package?username=24hrservices&apiToken=${{ secrets.PACKAGIST_API_TOKEN }}' -d'{"repository":{"url":"https://packagist.org/packages/richardsweeney/rawb-page-builder-base"}}'
