@@ -9,7 +9,7 @@
  */
 
 // Exit if accessed directly.
-if ( ! defined( 'ABSPATH' ) ) {
+if (! defined('ABSPATH')) {
 	exit;
 }
 
@@ -31,36 +31,30 @@ include 'block/section/index.php';
  */
 
 add_action( 'init', function () {
-
-	// Register block editor script for backend.
 	wp_register_script(
-		'rawb-page-builder-base', // Handle.
-		plugins_url( '/dist/blocks.build.js', dirname( __FILE__ ) ), // Block.build.js: We register the block here. Built with Webpack.
-		array( 'wp-blocks', 'wp-i18n', 'wp-element', 'wp-editor' ), // Dependencies, defined above.
-		null, // filemtime( plugin_dir_path( __DIR__ ) . 'dist/blocks.build.js' ), // Version: filemtime — Gets file modification time.
-		true // Enqueue the script in the footer.
+		'rawb-page-builder-base',
+		plugins_url('/build/blocks.js', dirname(__FILE__)),
+		['wp-blocks', 'wp-i18n', 'wp-element', 'wp-editor'],
+		filemtime(plugin_dir_path( __DIR__ ) . 'build/blocks.js'),
+		true
 	);
 
-	// WP Localized globals. Use dynamic PHP stuff in JavaScript via `cgbGlobal` object.
 	wp_localize_script(
 		'rawb-page-builder-base',
-		'cgbGlobal', // Array containing dynamic data for a JS Global.
+		'cgbGlobal',
 		[
 			'pluginDirPath' => plugin_dir_path( __DIR__ ),
 			'pluginDirUrl'  => plugin_dir_url( __DIR__ ),
 		]
 	);
 
-    // Only one block needs to register the collected script
 	register_block_type(
-      'next24hr/section',
-      array(
-      // Enqueue blocks.build.js in the editor only.
-      'editor_script' => 'rawb-page-builder-base',
-      )
+      	'next24hr/section',
+      	[
+	    	'editor_script' => 'rawb-page-builder-base',
+	  	]
    );
 
-    register_block_type( 'next24hr/column');
-
+    register_block_type('next24hr/column');
 });
 

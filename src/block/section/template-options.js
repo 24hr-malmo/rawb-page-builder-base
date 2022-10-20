@@ -2,7 +2,7 @@
 const { __ } = wp.i18n; // Import __() from wp.i18n
 const { SVG, Path } = wp.components;
 
-import * as templates from './templates.json';
+import templates from './templates.js';
 
 // These are the template options.
 // To add more options, just add a template to the templates.json (templates are also used to get default values in PHP parser),
