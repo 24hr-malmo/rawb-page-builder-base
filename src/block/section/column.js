@@ -103,6 +103,10 @@ registerBlockType('next24hr/column', {
     },
 
     save: function () {
-        return null;
+        return (
+            <div>
+                <InnerBlocks.Content />
+            </div>
+        );
     },
 });
