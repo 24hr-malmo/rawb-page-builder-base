@@ -1,5 +1,5 @@
 import styled from '@emotion/styled';
-import { Global, css } from '@emotion/core';
+import { css } from '@emotion/react';
 
 
 const StyledColumnLabel = styled.div`
