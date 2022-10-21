@@ -8,7 +8,7 @@
 /** @jsx jsx */
 /* global wp, NEXT24HR_ALLOWED_BLOCK_TYPES */
 
-import { Global, jsx } from '@emotion/core';
+import { Global, jsx } from '@emotion/react';
 import { globalCss, StyledColumnLabel, StyledBlockRoot, buttonCss } from './column.style';
 
 const { __ } = wp.i18n; // Import __() from wp.i18n
@@ -30,109 +30,79 @@ const { Button, ButtonGroup, Dashicon, PanelBody, PanelRow, RadioControl } = wp.
  *                             registered; otherwise `undefined`.
  */
 
-registerBlockType( 'next24hr/column', {
+registerBlockType('next24hr/column', {
     // Block name. Block names must be string that contains a namespace prefix. Example: my-plugin/my-custom-block.
-    title: __( 'Column' ), // Block title.
+    title: __('Column'), // Block title.
     icon: 'shield', // Block icon from Dashicons → https://developer.wordpress.org/resource/dashicons/.
     category: 'common', // Block category — Group blocks together based on common traits E.g. common, formatting, layout widgets, embed.
     // this means the block is only allowed as a child of columns block
-    parent: [ 'next24hr/section' ],
+    parent: ['next24hr/section'],
     attributes: {
         alignment: { type: 'string' },
         direction: { type: 'string' },
         features: { type: 'array', default: ['direction', 'aligment'] },
     },
-    keywords: [
-        __( 'next24hr-column — CGB Block' ),
-        __( 'CGB Example' ),
-        __( 'create-guten-block' ),
-    ],
-    edit: function( props ) {
-
+    keywords: [__('next24hr-column — CGB Block'), __('CGB Example'), __('create-guten-block')],
+    edit: function (props) {
         const { setAttributes } = props;
 
-        const {
-            alignment,
-            direction,
-            features,
-        } = props.attributes;
+        const { alignment, direction, features } = props.attributes;
 
         const blockedBlocks = props.blockedBlocks || [];
 
-        const allowedBlocks = !Array.isArray(NEXT24HR_ALLOWED_BLOCK_TYPES) ? true : NEXT24HR_ALLOWED_BLOCK_TYPES.filter(block => block !== 'next24hr/section' && block !== 'next24hr/column' && !blockedBlocks.includes(block));
+        const allowedBlocks = !Array.isArray(NEXT24HR_ALLOWED_BLOCK_TYPES)
+            ? true
+            : NEXT24HR_ALLOWED_BLOCK_TYPES.filter((block) => block !== 'next24hr/section' && block !== 'next24hr/column' && !blockedBlocks.includes(block));
 
         return (
             <StyledBlockRoot>
                 <StyledColumnLabel />
                 <Global styles={globalCss} />
                 <InspectorControls>
-                    <PanelBody title={ __( 'Column Options', 'next24hr' ) } >
-                        { features.includes('aligment') &&
+                    <PanelBody title={__('Column Options', 'next24hr')}>
+                        {features.includes('aligment') && (
                             <PanelRow>
                                 <ButtonGroup>
-                                    <Button
-                                        css={buttonCss}
-                                        isLarge
-                                        value={'left'}
-                                        isPrimary={alignment === 'left'}
-                                        onClick={() => setAttributes({alignment: 'left'})}
-                                    >
-                                        <Dashicon icon="editor-alignleft" />
+                                    <Button css={buttonCss} isLarge value={'left'} isPrimary={alignment === 'left'} onClick={() => setAttributes({ alignment: 'left' })}>
+                                        <Dashicon icon='editor-alignleft' />
                                     </Button>
-                                    <Button
-                                        css={buttonCss}
-                                        isLarge
-                                        isPrimary={alignment === 'center'}
-                                        onClick={() => setAttributes({alignment: 'center'})}
-                                    >
-                                        <Dashicon icon="editor-aligncenter" />
+                                    <Button css={buttonCss} isLarge isPrimary={alignment === 'center'} onClick={() => setAttributes({ alignment: 'center' })}>
+                                        <Dashicon icon='editor-aligncenter' />
                                     </Button>
-                                    <Button
-                                        css={buttonCss}
-                                        isLarge
-                                        isPrimary={alignment === 'right'}
-                                        onClick={() => setAttributes({alignment: 'right'})}
-                                    >
-                                        <Dashicon icon="editor-alignright" />
+                                    <Button css={buttonCss} isLarge isPrimary={alignment === 'right'} onClick={() => setAttributes({ alignment: 'right' })}>
+                                        <Dashicon icon='editor-alignright' />
                                     </Button>
                                 </ButtonGroup>
                             </PanelRow>
-                        }
-                        { features.includes('direction') &&
+                        )}
+                        {features.includes('direction') && (
                             <PanelRow>
-                                 <RadioControl
-                                     label={ __( 'Direction of elements', 'next24hr' ) }
-                                     selected={ direction }
-                                     options={ [
-                                         { label: __( 'Column', 'next24hr' ), value: 'column' },
-                                         { label: __( 'Row', 'next24hr' ), value: 'row' },
-                                     ] }
-                                     onChange={ (value) => props.setAttributes ({direction: value}) }
-                                 />
+                                <RadioControl
+                                    label={__('Direction of elements', 'next24hr')}
+                                    selected={direction}
+                                    options={[
+                                        { label: __('Column', 'next24hr'), value: 'column' },
+                                        { label: __('Row', 'next24hr'), value: 'row' },
+                                    ]}
+                                    onChange={(value) => props.setAttributes({ direction: value })}
+                                />
                             </PanelRow>
-                        }
+                        )}
                     </PanelBody>
                 </InspectorControls>
 
                 <InnerBlocks
                     // use the pre-made button block appender (not the default paragraph one)
-                    renderAppender={ () => (
-                        <InnerBlocks.ButtonBlockAppender />
-                    ) }
-                    allowedBlocks={ allowedBlocks }
+                    renderAppender={() => <InnerBlocks.ButtonBlockAppender />}
+                    allowedBlocks={allowedBlocks}
                     // if we don't disable template lock, it will be inherited from parent
-                    templateLock={ false }
+                    templateLock={false}
                 />
-
             </StyledBlockRoot>
         );
     },
 
-    save: function() {
-        return (
-            <div>
-                <InnerBlocks.Content />
-            </div>
-        );
+    save: function () {
+        return null;
     },
-} );
+});

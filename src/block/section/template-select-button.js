@@ -2,7 +2,7 @@
 
 /** @jsx jsx */
 
-import { jsx, css } from '@emotion/core';
+import { jsx, css } from '@emotion/react';
 
 const { Button } = wp.components;
 

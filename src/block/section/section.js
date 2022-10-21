@@ -8,14 +8,9 @@
 /* global wp */
 /** @jsx jsx */
 
-import { jsx, css } from '@emotion/core';
+import { jsx, css } from '@emotion/react';
 import { useEffect } from '@wordpress/element';
 import TemplateSelectButton from './template-select-button.js';
-// import React from 'react';
-
-// Must have these empty styles otherwise it doesn't build.
-import '../editor.scss';
-import '../style.scss';
 
 import { StyledBlockRoot, StyledContainer, StyledSectionLabel, StyledInfoBox, StyledInfoItem } from './section.style';
 import { TEMPLATE_OPTIONS, DEFAULT_TEMPLATE_INDEX } from './template-options';
