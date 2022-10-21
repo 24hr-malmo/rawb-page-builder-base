@@ -1,4 +1,4 @@
-# RAWB Wordpress PAge Builder BAse plugin
+# RAWB Wordpress Page Builder Base plugin
 
 This plugin provides two things:
 
