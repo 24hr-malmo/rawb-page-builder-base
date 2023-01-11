@@ -124,6 +124,7 @@ registerBlockType( 'next24hr/section', {
             'background.color', 
             'mobileDesktopFilter',
             'anchorTarget',
+            'disableTemplates'
         ] },
     },
 
@@ -135,7 +136,7 @@ registerBlockType( 'next24hr/section', {
 
     edit: function( props ) {
 
-        const { setAttributes, extraTemplates } = props;
+        const { setAttributes, extraTemplates, disableTemplates } = props;
 
         const {
 
@@ -206,8 +207,8 @@ registerBlockType( 'next24hr/section', {
         }, []);
 
         const image = backgroundType === 'image' ? backgroundValue : null;
-
-        const ALL_TEMPLATES = [ ...TEMPLATE_OPTIONS, ...(extraTemplates || []) ];
+        
+        const ALL_TEMPLATES = [ ...TEMPLATE_OPTIONS.filter(template => !disableTemplates.includes(template.slug)), ...(extraTemplates || []) ];
 
         const templateSelectHandler = ( templateIndex, replace = true) => {
 
@@ -428,72 +429,78 @@ registerBlockType( 'next24hr/section', {
                             </div>
                         </PanelRow>
                     </PanelBody>
-                    <PanelBody title={ __( 'Other options', 'next24hr' ) } initialOpen={false} >
-                        { features.includes('verticalPadding') &&
-                            <div>
+                    { features.includes('background') || backgroundType === 'color' || backgroundType === 'image' &&
+                        <PanelBody title={ __( 'Background', 'next24hr' ) } initialOpen={true} >
+                            { features.includes('background') &&
                                 <PanelRow>
                                     <RadioControl
-                                        label={ __( 'Padding Top', 'next24hr' ) }
-                                        selected={ paddingTop }
-                                        options={ [
-                                            { label: __( 'None', 'next24hr' ), value: 'none' },
-                                            { label: __( 'Medium', 'next24hr' ), value: 'medium' },
-                                            { label: __( 'Big', 'next24hr' ), value: 'big' },
-                                        ] }
-                                        onChange={ ( value ) => setAttributes({ paddingTop: value }) }
+                                        label={ __( 'Background', 'next24hr' ) }
+                                        selected={ backgroundType }
+                                        options={ backgroundTypesSelection }
+                                        onChange={ updateBackgroundType }
                                     />
                                 </PanelRow>
+                            }
+                            { backgroundType === 'color' ? colorOptions : null }
+                            { backgroundType === 'image' ? mediaOptions : null }
+                        </PanelBody>
+                    }
+                    { features.includes('verticalPadding') || features.includes('verticalAlignment') || features.includes('width') &&
+                        <PanelBody title={ __( 'Spacing', 'next24hr' ) } initialOpen={false} >
+                            { features.includes('verticalPadding') &&
+                                <div>
+                                    <PanelRow>
+                                        <RadioControl
+                                            label={ __( 'Padding Top', 'next24hr' ) }
+                                            selected={ paddingTop }
+                                            options={ [
+                                                { label: __( 'None', 'next24hr' ), value: 'none' },
+                                                { label: __( 'Medium', 'next24hr' ), value: 'medium' },
+                                                { label: __( 'Big', 'next24hr' ), value: 'big' },
+                                            ] }
+                                            onChange={ ( value ) => setAttributes({ paddingTop: value }) }
+                                        />
+                                    </PanelRow>
+                                    <PanelRow>
+                                        <RadioControl
+                                            label={ __( 'Padding Bottom', 'next24hr' ) }
+                                            selected={ paddingBottom }
+                                            options={ [
+                                                { label: __( 'None', 'next24hr' ), value: 'none' },
+                                                { label: __( 'Medium', 'next24hr' ), value: 'medium' },
+                                                { label: __( 'Big', 'next24hr' ), value: 'big' },
+                                            ] }
+                                            onChange={ ( value ) => setAttributes({ paddingBottom: value }) }
+                                        />
+                                    </PanelRow>
+                                </div>
+                            }
+                            { features.includes('verticalAlignment') &&
                                 <PanelRow>
                                     <RadioControl
-                                        label={ __( 'Padding Bottom', 'next24hr' ) }
-                                        selected={ paddingBottom }
+                                        label={ __( 'Vertical alignment', 'next24hr' ) }
+                                        selected={ verticalAlignment }
                                         options={ [
-                                            { label: __( 'None', 'next24hr' ), value: 'none' },
-                                            { label: __( 'Medium', 'next24hr' ), value: 'medium' },
-                                            { label: __( 'Big', 'next24hr' ), value: 'big' },
+                                            { label: __( 'Top', 'next24hr' ), value: 'top' },
+                                            { label: __( 'Center', 'next24hr' ), value: 'center' },
+                                            { label: __( 'Bottom', 'next24hr' ), value: 'bottom' },
                                         ] }
-                                        onChange={ ( value ) => setAttributes({ paddingBottom: value }) }
+                                        onChange={ ( verticalAlignment ) => updateVerticalAlignmentSetting( verticalAlignment, null ) }
                                     />
                                 </PanelRow>
-                            </div>
-                        }
-                        { features.includes('verticalAlignment') &&
-                            <PanelRow>
-                                <RadioControl
-                                    label={ __( 'Vertical alignment', 'next24hr' ) }
-                                    selected={ verticalAlignment }
-                                    options={ [
-                                        { label: __( 'Top', 'next24hr' ), value: 'top' },
-                                        { label: __( 'Center', 'next24hr' ), value: 'center' },
-                                        { label: __( 'Bottom', 'next24hr' ), value: 'bottom' },
-                                    ] }
-                                    onChange={ ( verticalAlignment ) => updateVerticalAlignmentSetting( verticalAlignment, null ) }
-                                />
-                            </PanelRow>
-                        }
-                        { features.includes('width') &&
-                            <PanelRow>
-                                <RadioControl
-                                    label={ __( 'Width', 'next24hr' ) }
-                                    selected={ sectionWidth }
-                                    options={ widthSelection }
-                                    onChange={ value => setAttributes( { sectionWidth: value } ) }
-                                />
-                            </PanelRow>
-                        }
-                        { features.includes('background') &&
-                            <PanelRow>
-                                <RadioControl
-                                    label={ __( 'Background', 'next24hr' ) }
-                                    selected={ backgroundType }
-                                    options={ backgroundTypesSelection }
-                                    onChange={ updateBackgroundType }
-                                />
-                            </PanelRow>
-                        }
-                        { backgroundType === 'color' ? colorOptions : null }
-                        { backgroundType === 'image' ? mediaOptions : null }
-                     </PanelBody>
+                            }
+                            { features.includes('width') &&
+                                <PanelRow>
+                                    <RadioControl
+                                        label={ __( 'Width', 'next24hr' ) }
+                                        selected={ sectionWidth }
+                                        options={ widthSelection }
+                                        onChange={ value => setAttributes( { sectionWidth: value } ) }
+                                    />
+                                </PanelRow>
+                            }
+                        </PanelBody>
+                    }
 
                     { getVisibilityFilterPanel() }
 

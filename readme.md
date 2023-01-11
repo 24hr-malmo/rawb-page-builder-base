@@ -65,6 +65,24 @@ const template = {
 
 ```
 
+You can also disable these default templates by their slug name (except the single column template), like so:
+
+```javascript
+// when you extend the gutenberg block:
+<BlockEdit { ...props } disableTemplates={[ 'threeColumnsWideCenter', 'fourColumnsEqual' ]}>
+
+/**
+ * Defaults:
+ * 
+ * twoColumnsEqual
+ * twoColumnsOneAndTwoThirds
+ * twoColumnsTwoAndOneThirds
+ * threeColumnsEqual
+ * threeColumnsWideCenter
+ * fourColumnsEqual
+ */
+```
+
 ### Column
 
 As in the section, the column has a set of features that can be turned on or off:
