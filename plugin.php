@@ -5,7 +5,7 @@
  * Description: Page Builder blocks for section and column
  * Author: Dr Tapia
  * Author URI: https://24hr.se/
- * Version: 0.9.9
+ * Version: 1.1.0
  * License: GPL2+
  * License URI: https://www.gnu.org/licenses/gpl-2.0.txt
  *
