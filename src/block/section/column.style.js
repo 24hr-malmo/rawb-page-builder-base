@@ -5,13 +5,13 @@ import { css } from '@emotion/react';
 const StyledColumnLabel = styled.div`
     position: relative;
     background-color: #f3f5f3;
-    height: 20px;
+    height: 18px;
     margin-left: -16px;
     margin-right: -16px;
     margin-bottom: 2rem;
     &:after {
         position: absolute;
-        top: 2px;
+        top: 3px;
         left: 8px;
         font-size: 9px;
         opacity: .5;

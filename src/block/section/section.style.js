@@ -7,7 +7,7 @@ const StyledContainer = styled.div`
     position: relative;
     & > div > .block-editor-block-list__layout {
         display: grid;
-        grid-template-columns: ${ p => p.templateID ? TEMPLATE_OPTIONS[ p.templateID ].style : TEMPLATE_OPTIONS[ DEFAULT_TEMPLATE_INDEX ].style };
+        grid-template-columns: ${ p => (p.templateID && p.allTemplates) ? p.allTemplates[ p.templateID ].style : TEMPLATE_OPTIONS[ DEFAULT_TEMPLATE_INDEX ].style };
         grid-column-gap: 8px;
     }
 `;
@@ -23,10 +23,11 @@ const StyledBlockRoot = styled.div`
 
 const StyledSectionLabel = styled.div`
     position: relative;
-    height: 16px;
+    height: 15px;
     &:after {
         position: absolute;
         font-size: 9px;
+        top: 1px;
         opacity: .5;
         content: 'section';
         font-weight: bold;
@@ -37,7 +38,7 @@ const StyledSectionLabel = styled.div`
 const StyledInfoBox = styled.div`
     position: absolute;
     display: flex;
-    top: -16px;
+    top: 3px;
     right: 0px;
     color: rgba(0,0,0,0.4);
     z-index: 10;
@@ -50,7 +51,6 @@ const StyledInfoBox = styled.div`
 `;
 const StyledInfoItem = styled.div`
     margin: 0rem 0.17rem;
-    background-color: #e6eae7;
     padding: 0rem 8px;
 `;
 

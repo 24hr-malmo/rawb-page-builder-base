@@ -40,6 +40,7 @@
             if ( $block->attrs['backgroundType'] === 'image' ) {
                 $parsed_block->backgroundValue = array(
                     '__isimage' => true,
+                    'alt' => $block->attrs['backgroundValue']['alt'],
                     'url' => $block->attrs['backgroundValue']['url'],
                     'width' => $block->attrs['backgroundValue']['width'],
                     'height' => $block->attrs['backgroundValue']['height'],
