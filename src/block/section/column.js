@@ -59,7 +59,7 @@ registerBlockType('next24hr/column', {
                 <StyledColumnLabel />
                 <Global styles={globalCss} />
                 <InspectorControls>
-                    { features.includes('aligment') || features.includes('direction') && (
+                    { (features.includes('aligment') || features.includes('direction')) && (
                         <PanelBody title={ __( 'Column Options', 'next24hr' ) } >
                             { features.includes('aligment') &&
                                 <PanelRow>

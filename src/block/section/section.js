@@ -203,7 +203,16 @@ registerBlockType( 'next24hr/section', {
 
         const image = backgroundType === 'image' ? backgroundValue : null;
         
-        const ALL_TEMPLATES = [ ...TEMPLATE_OPTIONS.filter(template => !disableTemplates.includes(template.slug)), ...(extraTemplates || []) ];
+        const ALL_TEMPLATES = [
+            ...TEMPLATE_OPTIONS.filter(template => {
+                if (!disableTemplates || disableTemplates.length === 0) {
+                    return true;
+                }
+
+                return !disableTemplates.includes(template.slug);
+            }),
+            ...(extraTemplates || [])
+        ];
 
         const templateSelectHandler = ( templateIndex, replace = true) => {
 
@@ -424,7 +433,7 @@ registerBlockType( 'next24hr/section', {
                             </div>
                         </PanelRow>
                     </PanelBody>
-                    { features.includes('background') || backgroundType === 'color' || backgroundType === 'image' &&
+                    { (features.includes('background') || backgroundType === 'color' || backgroundType === 'image') && (
                         <PanelBody title={ __( 'Background', 'next24hr' ) } initialOpen={true} >
                             { features.includes('background') &&
                                 <PanelRow>
@@ -439,8 +448,8 @@ registerBlockType( 'next24hr/section', {
                             { backgroundType === 'color' ? colorOptions : null }
                             { backgroundType === 'image' ? mediaOptions : null }
                         </PanelBody>
-                    }
-                    { features.includes('verticalPadding') || features.includes('verticalAlignment') || features.includes('width') &&
+                    )}
+                    { (features.includes('verticalPadding') || features.includes('verticalAlignment') || features.includes('width')) && (
                         <PanelBody title={ __( 'Spacing', 'next24hr' ) } initialOpen={false} >
                             { features.includes('verticalPadding') &&
                                 <div>
@@ -495,7 +504,7 @@ registerBlockType( 'next24hr/section', {
                                 </PanelRow>
                             }
                         </PanelBody>
-                    }
+                    )}
 
                     { getVisibilityFilterPanel() }
 
