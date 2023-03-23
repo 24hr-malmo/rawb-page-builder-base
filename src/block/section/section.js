@@ -174,12 +174,12 @@ registerBlockType( 'next24hr/section', {
         };
 
         const visibilityInfo = getVisibilityInfo(mobileDesktopFilter);
-        if (visibilityInfo) {
+        if (visibilityInfo && !infoBoxList.find(info => info.content === visibilityInfo.content)) {
             infoBoxList.push(visibilityInfo);
         }
 
         const anchorTargetInfo = getAnchorTargetInfo(anchorTarget, anchorTargetRef);
-        if (anchorTargetInfo) {
+        if (anchorTargetInfo && !infoBoxList.find(info => info.content === anchorTargetInfo.content)) {
             infoBoxList.push(anchorTargetInfo);
         }
 
