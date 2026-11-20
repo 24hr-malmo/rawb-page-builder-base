@@ -143,3 +143,23 @@ This is base on Create Gutenberg Block
 - Runs once and reports back the gzip file sizes of the produced code.
 
 
+
+## Changelog
+
+### 2.0.0
+
+Breaking: the blocks now use block API version 3 (needs WordPress 5.6 or newer; made for
+the iframed block editor, WordPress 6.3+ and always from 7.0).
+
+- Section and Column render their own block wrapper with `useBlockProps()` and save with
+  `useBlockProps.save()`. The saved markup is unchanged (same `wp-block-next24hr-section` /
+  `wp-block-next24hr-column` class), so existing content stays valid.
+- Emotion styles are written to the document the block is rendered in (the editor iframe
+  for the blocks, the admin page for their sidebar controls). Before, they only reached the
+  admin page, so the blocks were unstyled inside the iframe.
+- The section keeps its padding inside the editor's block width (`box-sizing: border-box`),
+  now that its root element is also the block wrapper.
+- Projects that wrap the Section or Column edit view in their own element through an
+  `editor.BlockEdit` filter: since the block root is now the edit view's own element,
+  such a wrapper ends up around the block in the editor's layout. Use
+  `editor.BlockListBlock` with `wrapperProps` instead.

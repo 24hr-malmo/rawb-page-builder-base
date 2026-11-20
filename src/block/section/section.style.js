@@ -13,6 +13,9 @@ const StyledContainer = styled.div`
 `;
 
 const StyledBlockRoot = styled.div`
+    /* Since block API v3 this element is also the editor's block wrapper, which the
+       editor/theme may give a max-width: keep the padding inside that width. */
+    box-sizing: border-box;
     position: relative;
     margin-bottom: 2rem;
     margin-top: 2rem;
