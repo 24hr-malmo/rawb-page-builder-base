@@ -11,6 +11,7 @@
 import { jsx, css } from '@emotion/react';
 import { useEffect } from '@wordpress/element';
 import TemplateSelectButton from './template-select-button.js';
+import { useBlockStyles, AdminStyles, CacheProvider } from '../../document-styles';
 
 import { StyledBlockRoot, StyledContainer, StyledSectionLabel, StyledInfoBox, StyledInfoItem } from './section.style';
 import { TEMPLATE_OPTIONS, DEFAULT_TEMPLATE_INDEX } from './template-options';
@@ -25,6 +26,7 @@ const {
     InnerBlocks,
     MediaUploadCheck,
     MediaUpload,
+    useBlockProps,
 } = wp.blockEditor;
 const {
     PanelBody,
@@ -82,6 +84,7 @@ const defaultBackgroundTypes = [
 ];
 
 registerBlockType( 'next24hr/section', {
+    apiVersion: 3,
     // Block name. Block names must be string that contains a namespace prefix. Example: my-plugin/my-custom-block.
     title: __( 'Section' ), // Block title.
     icon: 'tagcloud', // Block icon from Dashicons → https://developer.wordpress.org/resource/dashicons/.
@@ -130,6 +133,11 @@ registerBlockType( 'next24hr/section', {
     ],
 
     edit: function( props ) {
+
+        // Block API v3: this component renders the block wrapper itself, and its Emotion
+        // styles go to the document it is rendered in (the editor iframe).
+        const { cache, ref } = useBlockStyles();
+        const blockProps = useBlockProps( { ref } );
 
         const { setAttributes, extraTemplates, disableTemplates } = props;
 
@@ -418,10 +426,12 @@ registerBlockType( 'next24hr/section', {
         };
 
         return (
-            <StyledBlockRoot>
+            <CacheProvider value={ cache }>
+            <StyledBlockRoot { ...blockProps }>
                 {getInfoBoxListHtml()}
                 <StyledSectionLabel/>
                 <InspectorControls>
+                <AdminStyles>
                     <PanelBody title={ __( 'Section Layout Options', 'next24hr' ) } >
                         <PanelRow>
                             <div css={ css`
@@ -521,6 +531,7 @@ registerBlockType( 'next24hr/section', {
                     ) }
 
 
+                </AdminStyles>
                 </InspectorControls>
                 <StyledContainer templateID={templateID} css={sectionCss} allTemplates={ALL_TEMPLATES}>
                     <InnerBlocks
@@ -534,12 +545,13 @@ registerBlockType( 'next24hr/section', {
                     />
                 </StyledContainer>
             </StyledBlockRoot>
+            </CacheProvider>
         );
     },
 
     save: function() {
         return (
-            <div>
+            <div { ...useBlockProps.save() }>
                 <InnerBlocks.Content />
             </div>
         );

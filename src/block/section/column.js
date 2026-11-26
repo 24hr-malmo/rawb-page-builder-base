@@ -10,10 +10,11 @@
 
 import { Global, jsx } from '@emotion/react';
 import { globalCss, StyledColumnLabel, StyledBlockRoot, buttonCss } from './column.style';
+import { useBlockStyles, AdminStyles, CacheProvider } from '../../document-styles';
 
 const { __ } = wp.i18n; // Import __() from wp.i18n
 const { registerBlockType } = wp.blocks; // Import registerBlockType() from wp.blocks
-const { InnerBlocks, InspectorControls } = wp.blockEditor;
+const { InnerBlocks, InspectorControls, useBlockProps } = wp.blockEditor;
 const { Button, ButtonGroup, Dashicon, PanelBody, PanelRow, RadioControl } = wp.components;
 
 /**
@@ -31,6 +32,7 @@ const { Button, ButtonGroup, Dashicon, PanelBody, PanelRow, RadioControl } = wp.
  */
 
 registerBlockType('next24hr/column', {
+    apiVersion: 3,
     // Block name. Block names must be string that contains a namespace prefix. Example: my-plugin/my-custom-block.
     title: __('Column'), // Block title.
     icon: 'shield', // Block icon from Dashicons → https://developer.wordpress.org/resource/dashicons/.
@@ -44,6 +46,10 @@ registerBlockType('next24hr/column', {
     },
     keywords: [__('next24hr-column — CGB Block'), __('CGB Example'), __('create-guten-block')],
     edit: function (props) {
+        // Block API v3: this component renders the block wrapper itself, and its Emotion
+        // styles go to the document it is rendered in (the editor iframe).
+        const { cache, ref } = useBlockStyles();
+        const blockProps = useBlockProps({ ref });
         const { setAttributes } = props;
 
         const { alignment, direction, features } = props.attributes;
@@ -55,10 +61,12 @@ registerBlockType('next24hr/column', {
             : NEXT24HR_ALLOWED_BLOCK_TYPES.filter((block) => block !== 'next24hr/section' && block !== 'next24hr/column' && !blockedBlocks.includes(block));
 
         return (
-            <StyledBlockRoot>
+            <CacheProvider value={ cache }>
+            <StyledBlockRoot {...blockProps}>
                 <StyledColumnLabel />
                 <Global styles={globalCss} />
                 <InspectorControls>
+                <AdminStyles>
                     { (features.includes('aligment') || features.includes('direction')) && (
                         <PanelBody title={ __( 'Column Options', 'next24hr' ) } >
                             { features.includes('aligment') &&
@@ -107,6 +115,7 @@ registerBlockType('next24hr/column', {
                             }
                         </PanelBody>
                     )}
+                </AdminStyles>
                 </InspectorControls>
 
                 <InnerBlocks
@@ -117,12 +126,13 @@ registerBlockType('next24hr/column', {
                     templateLock={false}
                 />
             </StyledBlockRoot>
+            </CacheProvider>
         );
     },
 
     save: function () {
         return (
-            <div>
+            <div {...useBlockProps.save()}>
                 <InnerBlocks.Content />
             </div>
         );
